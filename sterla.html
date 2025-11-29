@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STERLA Ultimate Dashboard</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+/* === RESET & FONTS === */
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{display:flex;min-height:100vh;background:linear-gradient(135deg,#c3ecf9,#ffffff);overflow-x:hidden;}
+
+/* === SIDEBAR === */
+.sidebar{
+  width:280px;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  padding:30px 20px;
+  display:flex;
+  flex-direction:column;
+  animation: slideIn 0.5s ease forwards;
+}
+.sidebar h2{text-align:center;color:#007bff;margin-bottom:40px;font-size:1.8rem;}
+.sidebar ul{list-style:none;}
+.sidebar ul li{
+  padding:15px 15px;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  border-radius:12px;
+  margin-bottom:12px;
+  cursor:pointer;
+  transition:0.3s;
+  font-weight:500;
+}
+.sidebar ul li:hover, .sidebar ul li.active{background: rgba(255,255,255,0.25);}
+.sidebar ul li i{margin-right:15px;color:#007bff;font-size:1.2rem;}
+
+/* === MAIN CONTENT === */
+.main{flex:1;padding:25px;overflow-y:auto;}
+header{font-size:2.2rem;color:#007bff;margin-bottom:30px;animation:fadeIn 1s ease;text-align:center;}
+
+/* === PANEL STYLING === */
+.panel{
+  background: rgba(255,255,255,0.25);
+  backdrop-filter: blur(20px);
+  border-radius:25px;
+  padding:25px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  animation:fadeIn 1s ease;
+  display:none;
+}
+.panel.active{display:block;}
+textarea{width:100%;height:140px;border-radius:15px;border:none;padding:15px;resize:none;margin-bottom:15px;}
+button{padding:12px 30px;border:none;border-radius:12px;background:#007bff;color:white;font-weight:600;cursor:pointer;transition:0.3s;font-size:1rem;}
+button:hover{background:#0056b3;}
+#chatOutput{margin-top:20px;background: rgba(255,255,255,0.25);padding:15px;border-radius:15px;min-height:80px;white-space: pre-wrap;overflow-y:auto;max-height:300px;}
+
+/* === CARDS === */
+.card{
+  background: rgba(255,255,255,0.25);
+  padding:20px;
+  border-radius:20px;
+  margin-bottom:20px;
+  box-shadow:0 6px 24px rgba(0,0,0,0.1);
+  transition:0.3s;
+}
+.card:hover{transform:translateY(-7px) scale(1.02);}
+.card h3{margin-bottom:10px;color:#007bff;}
+.card p{color:#000;font-weight:500;line-height:1.4;}
+
+/* === MINI-MINDMAP === */
+.mindmap{
+  display:flex;
+  flex-wrap:wrap;
+  gap:15px;
+}
+.mindmap .node{
+  background: rgba(0,123,255,0.15);
+  color:#007bff;
+  padding:15px 20px;
+  border-radius:15px;
+  flex:1 1 calc(33% - 20px);
+  text-align:center;
+  font-weight:600;
+  cursor:pointer;
+  transition:0.3s;
+}
+.mindmap .node:hover{background:#007bff;color:white;transform:scale(1.05);}
+
+/* === QUIZZES === */
+.quiz{margin-bottom:20px;}
+.quiz p{margin-bottom:8px;font-weight:500;}
+.quiz button{margin-top:5px;}
+
+/* === ANIMATIONS === */
+@keyframes slideIn{from{transform:translateX(-100%);}to{transform:translateX(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+/* === RESPONSIVE === */
+@media(max-width:900px){.sidebar{width:200px;} .mindmap .node{flex:1 1 calc(50% - 15px);}}
+@media(max-width:600px){.sidebar{display:none;} .main{padding:15px;}}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+<h2>STERLA</h2>
+<ul>
+<li class="active" onclick="showPanel('home')"><i class="fas fa-home"></i> Home</li>
+<li onclick="showPanel('study')"><i class="fas fa-book"></i> Study</li>
+<li onclick="showPanel('mindmaps')"><i class="fas fa-lightbulb"></i> Mindmaps</li>
+<li onclick="showPanel('worksheets')"><i class="fas fa-clipboard"></i> Worksheets</li>
+<li onclick="showPanel('quizzes')"><i class="fas fa-question-circle"></i> Quizzes</li>
+<li onclick="showPanel('chat')"><i class="fas fa-comments"></i> Chat</li>
+</ul>
+</div>
+
+<div class="main">
+<header>Welcome to STERLA</header>
+
+<!-- HOME PANEL -->
+<div id="home" class="panel active">
+<div class="card"><h3>Dashboard Overview</h3><p>Access study resources, mindmaps, quizzes, worksheets, and chat with STERLA in one interactive dashboard.</p></div>
+<div class="card"><h3>Tips & Tricks</h3><p>Organize your time, review notes, and generate worksheets or mindmaps for faster learning.</p></div>
+</div>
+
+<!-- STUDY PANEL -->
+<div id="study" class="panel">
+<div class="card"><h3>Study Material</h3><p>Explore lessons and chapters for all subjects. Quickly review key concepts and notes.</p></div>
+<div class="card"><h3>Recent Topics</h3><p>Reproduction in Animals, Electric Current, Sound Propagation, Heating Effects, and more.</p></div>
+</div>
+
+<!-- MINDMAPS PANEL -->
+<div id="mindmaps" class="panel">
+<div class="card"><h3>Interactive Mindmaps</h3>
+<p>Click nodes to explore connections between topics.</p>
+<div class="mindmap">
+<div class="node" onclick="alert('Topic: Reproduction')">Reproduction</div>
+<div class="node" onclick="alert('Topic: Fertilization')">Fertilization</div>
+<div class="node" onclick="alert('Topic: Gestation')">Gestation</div>
+<div class="node" onclick="alert('Topic: Puberty')">Puberty</div>
+<div class="node" onclick="alert('Topic: Hormones')">Hormones</div>
+<div class="node" onclick="alert('Topic: Menstrual Cycle')">Menstrual Cycle</div>
+</div>
+</div>
+</div>
+
+<!-- WORKSHEETS PANEL -->
+<div id="worksheets" class="panel">
+<div class="card"><h3>Generate Worksheets</h3>
+<p>Create worksheets based on difficulty levels and topics. Click the buttons below for examples.</p>
+<button onclick="alert('Worksheet for Reproduction generated!')">Reproduction</button>
+<button onclick="alert('Worksheet for Electric Current generated!')">Electric Current</button>
+<button onclick="alert('Worksheet for Sound generated!')">Sound</button>
+</div>
+</div>
+
+<!-- QUIZZES PANEL -->
+<div id="quizzes" class="panel">
+<div class="quiz">
+<p><strong>Q1:</strong> Which organelle produces energy in the cell?</p>
+<button onclick="alert('Correct! Mitochondria')">Check Answer</button>
+</div>
+<div class="quiz">
+<p><strong>Q2:</strong> What is the SI unit of electric current?</p>
+<button onclick="alert('Correct! Ampere')">Check Answer</button>
+</div>
+<div class="quiz">
+<p><strong>Q3:</strong> Sound travels fastest in which medium?</p>
+<button onclick="alert('Correct! Solids')">Check Answer</button>
+</div>
+</div>
+
+<!-- CHAT PANEL -->
+<div id="chat" class="panel">
+<textarea id="prompt" placeholder="Ask STERLA anything..."></textarea>
+<button onclick="sendPrompt()">Send</button>
+<div id="chatOutput"></div>
+</div>
+
+</div>
+
+<script>
+// --- Sidebar Menu Switch ---
+function showPanel(id){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.sidebar ul li').forEach(li=>li.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+}
+
+// --- Chat Option B JS ---
+async function sendPrompt(){
+  const prompt = document.getElementById('prompt').value;
+  const output = document.getElementById('chatOutput');
+  output.innerHTML = "STERLA is thinking...";
+
+  try{
+    const res = await fetch('http://localhost:3000/api/chat',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({prompt})
+    });
+    const data = await res.json();
+    output.innerHTML = data.choices?.[0]?.message?.content || "No response received.";
+  } catch(err){
+    output.innerHTML = "Error contacting STERLA.";
+    console.error(err);
+  }
+}
+</script>
+
+</body>
+</html>
